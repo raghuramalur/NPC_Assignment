@@ -112,7 +112,7 @@ class MyStrategy(ScriptStrategyBase):
         # Determine base spread based on Keltner bandwidth % (volatility tiers)
         band_width_value = Decimal(str(upper_band - lower_band))
         bandwidth_percentage = (band_width_value / ref_price) if band_width_value > 0 else Decimal("0.01") # Handle zero/negative width
-        # Tiered spread factors - these values likely need tuning
+        # Tiered spread factors
         if bandwidth_percentage < Decimal("0.005"): base_spread_factor = Decimal("0.001")   # Very Low Vol (< 0.5%) -> Tightest spread
         elif bandwidth_percentage < Decimal("0.01"): base_spread_factor = Decimal("0.002")  # Low Vol (< 1.0%) -> Tighter spread
         elif bandwidth_percentage < Decimal("0.02"): base_spread_factor = Decimal("0.005")  # Medium Vol (< 2.0%) -> Wider spread
@@ -154,7 +154,7 @@ class MyStrategy(ScriptStrategyBase):
             current_base_pct = (base_value / total_portfolio_value) if total_portfolio_value > 0 else self.config.target_inventory_pct
 
             # Define inventory caps based on current volatility level (Keltner bandwidth %)
-            # Tighter caps in higher volatility - values need tuning
+            # Tighter caps in higher volatility
             if bandwidth_percentage < Decimal("0.01"): # Low Vol
                 max_allowed_base_pct = self.config.target_inventory_pct + Decimal("0.10") # +/- 10% from target
                 min_allowed_base_pct = self.config.target_inventory_pct - Decimal("0.10")
